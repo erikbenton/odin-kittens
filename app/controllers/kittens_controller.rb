@@ -15,24 +15,37 @@ class KittensController < ApplicationController
   def create
     @kitten = Kitten.new(kitten_params)
     if @kitten.save
-      # Success!
+      flash[:success] = "You made a kitty! =)"
+      redirect_to kitten_path(@kitten)
     else
-      # Failure
+      flash[:danger] = "Uh-oh, no kitty was made =("
+      redirect_to kittens_url
     end
-  end
-
-  def update
   end
 
   def edit
     @kitten = Kitten.find(params[:id])
   end
 
+  def update
+    @kitten = Kitten.find(params[:id])
+    if @kitten.update_attributes(kitten_params)
+      flash[:success] = "You updated da kitteh"
+      redirect_to @kitten
+    else
+      flash.now[:danger] = "Da kitty was not updated..."
+      render 'edit'
+    end
+  end
+  
   def destroy
+    Kitten.find(params[:id]).destroy
+    flash[:danger] = "You destroyed a kitty D="
+    redirect_to kittens_url
   end
 
   private
     def kitten_params
-      
+      params.require(:kitten).permit(:name, :age, :cuteness, :softness)
     end
 end

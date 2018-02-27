@@ -2,6 +2,6 @@
 
 <ul>
 	<% @kittens.each do |kitten| %>
-		<li><%= kitten.name %></li>
+		<li><%= kitten.name %> - <%= link_to "edit", edit_kitten_path(kitten) %> - <%= link_to "delete", kitten_path(kitten), method: :delete %></li>
 	<% end %>
 </ul>
